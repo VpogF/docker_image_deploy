@@ -1,18 +1,26 @@
-name: Docker Image CI
+name: Test
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
-
-  build:
-
+  publish_image:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout de repositorio
     - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+
+    -name: Iniciar sesión DH
+    run: echo "${{ secrets.IMG_SECRET }}" | DOCKER LOGIN -U "vpog" --password-stdin
+
+    -name: Construir img
+    run: docker build -t mi-hello-world:latest .
+
+    -name: Etiquetar img
+    run: docker tag mi-hello-world:latest vpog/mi-hello-world:latest
+
+    -name: Subir img a DH
+    run: docker push vpog/mi-hello-world:latest
