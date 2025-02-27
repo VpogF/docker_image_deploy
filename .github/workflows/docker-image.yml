@@ -13,14 +13,14 @@ jobs:
     - name: Checkout de repositorio
     - uses: actions/checkout@v4
 
-    -name: Iniciar sesión DH
-    run: echo "${{ secrets.IMG_SECRET }}" | DOCKER LOGIN -U "vpog" --password-stdin
+    - name: Iniciar sesión DH
+      run: echo "${{ secrets.IMG_SECRET }}" | DOCKER LOGIN -u "vpog" --password-stdin
 
-    -name: Construir img
-    run: docker build -t mi-hello-world:latest .
+    - name: Construir img
+      run: docker build -t mi-hello-world:latest .
 
-    -name: Etiquetar img
-    run: docker tag mi-hello-world:latest vpog/mi-hello-world:latest
+    - name: Etiquetar img
+      run: docker tag mi-hello-world:latest vpog/mi-hello-world:latest
 
-    -name: Subir img a DH
-    run: docker push vpog/mi-hello-world:latest
+    - name: Subir img a DH
+      run: docker push vpog/mi-hello-world:latest
